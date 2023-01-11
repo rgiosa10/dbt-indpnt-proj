@@ -1,5 +1,3 @@
-{{ config(materialized='table') }}
-
 with origin_airports as (
 
     SELECT
@@ -14,7 +12,7 @@ with origin_airports as (
         origin.tz_timezone as airport_tz_timezone,
         CURRENT_TIMESTAMP as created_at,
         NULL as modified_at
-    FROM {{ source('air_travel', 'air_travel') }}
+    FROM `idyllic-vehicle-374218.air_travel.air_travel`
     GROUP BY 1,2,3,4,5,6,7,8,9
 ),
 
@@ -32,12 +30,18 @@ dest_airports as (
         destination.tz_timezone as airport_tz_timezone,
         CURRENT_TIMESTAMP as created_at,
         NULL as modified_at
-    FROM {{ source('air_travel', 'air_travel') }}
+    FROM `idyllic-vehicle-374218.air_travel.air_travel`
     GROUP BY 1,2,3,4,5,6,7,8,9
 ),
 
-SELECT * FROM origin_airports
-UNION
-SELECT * FROM dest_airports;
+final as (
+    SELECT * FROM origin_airports
+    UNION ALL
+    SELECT * FROM dest_airports
+)
+
+SELECT *
+FROM final
+GROUP BY airport_iata,airport_name, airport_city, airport_country, airport_icao, airport_latitude, airport_longitude, airport_altitude, airport_tz_timezone, created_at, modified_at;
 
 
