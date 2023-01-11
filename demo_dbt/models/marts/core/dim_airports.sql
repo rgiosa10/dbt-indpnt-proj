@@ -1,3 +1,5 @@
+{{ config(materialized='table') }}
+
 with origin_airports as (
 
     SELECT
@@ -42,6 +44,7 @@ final as (
 
 SELECT *
 FROM final
-GROUP BY airport_iata,airport_name, airport_city, airport_country, airport_icao, airport_latitude, airport_longitude, airport_altitude, airport_tz_timezone, created_at, modified_at;
+where airport_iata is not null
+GROUP BY airport_iata,airport_name, airport_city, airport_country, airport_icao, airport_latitude, airport_longitude, airport_altitude, airport_tz_timezone, created_at, modified_at
 
 
