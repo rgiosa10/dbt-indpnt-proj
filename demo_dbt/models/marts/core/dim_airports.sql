@@ -14,7 +14,7 @@ with origin_airports as (
         origin.tz_timezone as airport_tz_timezone,
         CURRENT_TIMESTAMP as created_at,
         NULL as modified_at
-    FROM `idyllic-vehicle-374218.air_travel.air_travel`
+    FROM {{ source('air_travel', 'air_travel') }}
     GROUP BY 1,2,3,4,5,6,7,8,9
 ),
 
@@ -32,7 +32,7 @@ dest_airports as (
         destination.tz_timezone as airport_tz_timezone,
         CURRENT_TIMESTAMP as created_at,
         NULL as modified_at
-    FROM `idyllic-vehicle-374218.air_travel.air_travel`
+    FROM {{ source('air_travel', 'air_travel') }}
     GROUP BY 1,2,3,4,5,6,7,8,9
 ),
 
