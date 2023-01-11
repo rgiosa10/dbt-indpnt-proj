@@ -56,3 +56,26 @@ models:
       - name: effective_end_date
       - name: created_at
       - name: modified_at
+  name: fct_tickets
+    description: fact of the tickets data
+    columns:
+      - name: eticket_num
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: confirmation
+      - name: ticket_date
+      - name: price
+      - name: seat
+      - name: status
+      - name: origin_iata
+        description: "A foreign key which is PK in dim_airports as airport_id"
+      - name: dest_iata
+        description: "A foreign key which is PK in dim_airports as airport_id"
+      - name: airline_iata
+        description: "A foreign key which is PK in dim_airlines"
+      - name: passenger_sk
+        description: "A foreign key which is PK in dim_passengers"
+      - name: created_at
+      - name: modified_at
