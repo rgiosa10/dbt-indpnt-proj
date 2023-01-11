@@ -35,3 +35,24 @@ models:
       - name: airport_tz_timezone
       - name: created_at
       - name: modified_at
+  - name: dim_passengers
+    description: dim of the passengers data
+    columns:
+      - name: passenger_sk
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: email_id
+        description: "The natural key for this table"
+      - name: first_name
+      - name: last_name
+      - name: birth_date
+      - name: passenger_street
+      - name: passenger_city
+      - name: passenger_state
+      - name: passenger_zip
+      - name: effective_start_date
+      - name: effective_end_date
+      - name: created_at
+      - name: modified_at
