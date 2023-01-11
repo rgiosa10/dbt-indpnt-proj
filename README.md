@@ -2,7 +2,7 @@
 
 #### By Ruben Giosa
 
-#### This repo includes covers the same data modeling, loading, normalization exercise covered in my ![data-modeling-cr](https://github.com/rgiosa10/data-modeling-cr) repository but leverages dbt instead.
+#### This repo includes covers the same data modeling, loading, normalization exercise covered in my [data-modeling-cr](https://github.com/rgiosa10/data-modeling-cr) repository but leverages [dbt](https://www.getdbt.com/) instead.
 
 <br>
 
