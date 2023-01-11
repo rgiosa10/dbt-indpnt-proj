@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: air_travel
+    description: a clone of a JSON file
+    database: idyllic-vehicle-374218
+    schema: air_travel
+    tables:
+      - name: air_travel
+        description: the raw data
