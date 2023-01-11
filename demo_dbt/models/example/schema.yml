@@ -5,17 +5,33 @@ models:
   - name: dim_airlines
     description: dim of the airline data
     columns:
-      - name: id
+      - name: airline_iata
         description: "The primary key for this table"
         tests:
           - unique
           - not_null
+      - name: airline_name
+      - name: airline_icao
+      - name: airline_callsign
+      - name: airline_country
+      - name: created_at
+      - name: modified_at
 
-  - name: my_second_dbt_model
-    description: "A starter dbt model"
+  - name: dim_airports
+    description: dim of the airport data
     columns:
-      - name: id
+      - name: airport_iata
         description: "The primary key for this table"
         tests:
           - unique
           - not_null
+      - name: airport_name 
+      - name: airport_city
+      - name: airport_country
+      - name: airport_icao
+      - name: airport_latitude
+      - name: airport_longitude
+      - name: airport_altitude
+      - name: airport_tz_timezone
+      - name: created_at
+      - name: modified_at
