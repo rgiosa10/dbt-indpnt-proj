@@ -56,7 +56,7 @@ models:
       - name: effective_end_date
       - name: created_at
       - name: modified_at
-  name: fct_tickets
+  - name: fct_tickets
     description: fact of the tickets data
     columns:
       - name: eticket_num
