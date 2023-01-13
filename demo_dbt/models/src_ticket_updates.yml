@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: ticket_updates
+    description: a clone of a CSV file
+    database: idyllic-vehicle-374218
+    schema: ticket_updates
+    tables:
+      - name: ticket_updates
+        description: the raw data

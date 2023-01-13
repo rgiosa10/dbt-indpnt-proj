@@ -13,7 +13,7 @@ with passengers as (
         NULL as effective_end_date,
         CURRENT_TIMESTAMP as created_at,
         NULL as modified_at
-    FROM `idyllic-vehicle-374218.air_travel.air_travel`
+    FROM {{ source('air_travel', 'air_travel') }}
     GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12
 ),
 
