@@ -1,6 +1,14 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key='eticket_num',
+        on_schema_change='fail'
+    )
+}}
+
 with ticket_updates as (
     SELECT *
-    FROM {{ source('ticket_updates', 'ticket_updates') }}
+    FROM {{ source('air_travel', 'ticket_updates') }}
 ),
 
 consolidated as (
@@ -18,19 +26,43 @@ consolidated as (
         FROM {{ ref('stg_tickets') }} 
         ) as stgt
     ON ticket_updates.eticket_num = stgt.eticket_num
-)
+),
 
-MERGE INTO {{ ref('fct_tickets') }} as trg
-USING consolidated as src
-ON trg.eticket_num = src.eticket_num
-WHEN MATCHED THEN
-    UPDATE SET 
-        price = src.price,
-        seat = src.seat,
-        status = src.status,
-        modified_at = CURRENT_TIMESTAMP
-WHEN NOT MATCHED THEN
-    INSERT (
+using_clause as (
+
+    SELECT
+        price,
+        seat,
+        status,
+        CURRENT_TIMESTAMP as modified_at
+    FROM consolidated
+
+    {% if is_incremental() %}
+
+        WHERE modified_at > (SELECT CURRENT_TIMESTAMP FROM {{ ref('fct_tickets') }})
+
+    {% endif %}
+),
+
+updates as (
+    SELECT
+        price,
+        seat,
+        status,
+        modified_at
+    FROM using_clause
+
+    {% if is_incremental() %}
+
+        WHERE eticket_num IN (SELECT eticket_num FROM {{ ref('fct_tickets') }})
+
+    {% endif %}
+
+),
+
+inserts AS (
+
+    SELECT
         eticket_num,
         confirmation,
         ticket_date,
@@ -41,17 +73,12 @@ WHEN NOT MATCHED THEN
         dest_iata, 
         airline_iata,
         passenger_sk,
-        CURRENT_TIMESTAMP as created_at,
-        NULL as modified_at) VALUES (src.eticket_num,
-        src.confirmation,
-        src.ticket_date,
-        src.price,
-        src.seat,
-        src.status,
-        src.origin_iata, 
-        src.dest_iata, 
-        src.airline_iata,
-        src.passenger_sk,
-        CURRENT_TIMESTAMP as created_at,
-        NULL as modified_at)
+        created_at,
+        modified_at
+    FROM using_clause
+    WHERE eticket_num NOT IN (SELECT eticket_num FROM updates)
+
+)
+
+SELECT * FROM updates UNION ALL SELECT * FROM inserts
     

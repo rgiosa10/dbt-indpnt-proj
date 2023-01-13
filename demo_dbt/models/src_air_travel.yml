@@ -8,3 +8,5 @@ sources:
     tables:
       - name: air_travel
         description: the raw data
+      - name: ticket_updates
+        description: the raw data
