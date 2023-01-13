@@ -33,13 +33,12 @@ using_clause as (
     SELECT
         price,
         seat,
-        status,
-        CURRENT_TIMESTAMP as modified_at
+        status
     FROM consolidated
 
     {% if is_incremental() %}
 
-        WHERE modified_at > (SELECT CURRENT_TIMESTAMP FROM {{ ref('fct_tickets') }})
+        WHERE price != (SELECT price FROM {{ this }}) or seat != (SELECT seat FROM {{ this }}) or status != (SELECT status FROM {{ this }})
 
     {% endif %}
 ),
@@ -49,12 +48,12 @@ updates as (
         price,
         seat,
         status,
-        modified_at
+        CURRENT_TIMESTAMP as modified_at
     FROM using_clause
 
     {% if is_incremental() %}
 
-        WHERE eticket_num IN (SELECT eticket_num FROM {{ ref('fct_tickets') }})
+        WHERE eticket_num IN (SELECT eticket_num FROM {{ this }})
 
     {% endif %}
 
