@@ -1,46 +1,48 @@
+-- use with statement nesting for transformations
+
 with origin_airports as (
 
     SELECT
-        origin.iata as airport_iata,
-        origin.name as airport_name, 
-        origin.city as airport_city, 
-        origin.country as airport_country,
-        origin.icao as airport_icao,
-        origin.latitude as airport_latitude,
-        origin.longitude as airport_longitude,
-        origin.altitude as airport_altitude,
-        origin.tz_timezone as airport_tz_timezone,
-        CURRENT_TIMESTAMP as created_at,
-        NULL as modified_at
+        origin.iata as airport_iata,--rename column to align with data model
+        origin.name as airport_name, --rename column to align with data model
+        origin.city as airport_city, --rename column to align with data model
+        origin.country as airport_country, --rename column to align with data model
+        origin.icao as airport_icao, --rename column to align with data model
+        origin.latitude as airport_latitude, --rename column to align with data model
+        origin.longitude as airport_longitude, --rename column to align with data model
+        origin.altitude as airport_altitude, --rename column to align with data model
+        origin.tz_timezone as airport_tz_timezone, --rename column to align with data model
+        CURRENT_TIMESTAMP as created_at, -- created_at column generated and filled with timestamp
+        NULL as modified_at -- modified_at column generated with Null
     FROM {{ source('air_travel', 'air_travel') }}
-    GROUP BY 1,2,3,4,5,6,7,8,9
+    GROUP BY 1,2,3,4,5,6,7,8,9 -- remove any duplicates
 ),
 
 dest_airports as (
 
     SELECT
-        destination.iata as airport_iata,
-        destination.name as airport_name, 
-        destination.city as airport_city, 
-        destination.country as airport_country,
-        destination.icao as airport_icao,
-        destination.latitude as airport_latitude,
-        destination.longitude as airport_longitude,
-        destination.altitude as airport_altitude,
-        destination.tz_timezone as airport_tz_timezone,
-        CURRENT_TIMESTAMP as created_at,
-        NULL as modified_at
+        destination.iata as airport_iata, --rename column to align with data model
+        destination.name as airport_name, --rename column to align with data model
+        destination.city as airport_city, --rename column to align with data model
+        destination.country as airport_country, --rename column to align with data model
+        destination.icao as airport_icao, --rename column to align with data model
+        destination.latitude as airport_latitude, --rename column to align with data model
+        destination.longitude as airport_longitude, --rename column to align with data model
+        destination.altitude as airport_altitude, --rename column to align with data model
+        destination.tz_timezone as airport_tz_timezone, --rename column to align with data model
+        CURRENT_TIMESTAMP as created_at, -- created_at column generated and filled with timestamp
+        NULL as modified_at -- modified_at column generated with Null
     FROM {{ source('air_travel', 'air_travel') }}
-    GROUP BY 1,2,3,4,5,6,7,8,9
+    GROUP BY 1,2,3,4,5,6,7,8,9 -- remove any duplicates
 ),
 
 final as (
-    SELECT * FROM origin_airports
-    UNION ALL
-    SELECT * FROM dest_airports
+    SELECT * FROM origin_airports 
+    UNION ALL -- BigQuery does not use UNION so use UNION ALL
+    SELECT * FROM dest_airports -- perform UNION to concat the two queries
 )
 
-SELECT *
+SELECT * -- Query this combined query and remove any duplicates as UNION ALL does not remove duplicate values
 FROM final
 where airport_iata is not null
 GROUP BY 
