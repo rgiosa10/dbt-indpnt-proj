@@ -89,7 +89,6 @@ A ticket contains a few different entities:
 In this exercise, the below are performed:
 1. JSON file is loaded into BigQuery
 1. Development of an ELT pipeline normalizing the source file into our facts and dimensions
-1. Adds a task that updates (merges) tickets in our fact table leveraging a stating table
 
 <br><br>
 
@@ -118,7 +117,9 @@ Using draw.io a data model (see below and also in main notebook), that meets the
 A ETL pipeline created that loads the dimensions and facts from the source file, and meets the following requirements:
 
 **General**:
-- Leverages dbt, SQL and Jinja to create ETL that creates the dim and facts outlined in the data model above
+- Leverages dbt, SQL and Jinja to create ELT that creates the dim and facts outlined in the data model above. The below Lineage Graph shows to final ELT pipeline:
+
+<img src="imgs/dbt_lineage_graph.png" alt="lineage graph" width="640"/>
 
 **Airlines Dim:**
 - Identifies unique airlines
@@ -140,19 +141,9 @@ A ETL pipeline created that loads the dimensions and facts from the source file,
 **Tickets Fact:**
 - Links to _airlines_ and _airports_ dimensions by their IATA codes. 
 - Links to the _passengers_ dimension by its surrogate key by performing a looking up to the _passengers_ dimension
-- Loads all the tickets
+- Loads all the tickets. See image below of dimension and fact tables loaded into BigQuery.
 
-<br><br>
-
-## Exercise 3: Merging
-
-Take a look at the source file: [`data/air_travel/ticket_updates/ticket_updates.csv`](./data/air_travel/ticket_updates/ticket_updates.csv)
-
-This file contains some updates to our tickets. Either the _price_, _seat number_, or the _status_ has been updated for these tickets.
-
-Here an ETL task is created that:
-1. Loads the updates into an staging table
-1. Uses the SQL merge statement to update the _tickets_ fact
+<img src="imgs/dbt_tables_BQ.png" alt="tables in Bigquery" width="640"/>
 
 <br><br>
 
