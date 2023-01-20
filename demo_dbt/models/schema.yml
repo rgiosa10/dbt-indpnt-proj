@@ -1,0 +1,81 @@
+
+version: 2
+
+models:
+  - name: dim_airlines
+    description: dim of the airline data
+    columns:
+      - name: airline_iata
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: airline_name
+      - name: airline_icao
+      - name: airline_callsign
+      - name: airline_country
+      - name: created_at
+      - name: modified_at
+
+  - name: dim_airports
+    description: dim of the airport data
+    columns:
+      - name: airport_iata
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: airport_name 
+      - name: airport_city
+      - name: airport_country
+      - name: airport_icao
+      - name: airport_latitude
+      - name: airport_longitude
+      - name: airport_altitude
+      - name: airport_tz_timezone
+      - name: created_at
+      - name: modified_at
+  - name: dim_passengers
+    description: dim of the passengers data
+    columns:
+      - name: passenger_sk
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: email_id
+        description: "The natural key for this table"
+      - name: first_name
+      - name: last_name
+      - name: birth_date
+      - name: passenger_street
+      - name: passenger_city
+      - name: passenger_state
+      - name: passenger_zip
+      - name: effective_start_date
+      - name: effective_end_date
+      - name: created_at
+      - name: modified_at
+  - name: fct_tickets
+    description: fact of the tickets data
+    columns:
+      - name: eticket_num
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: confirmation
+      - name: ticket_date
+      - name: price
+      - name: seat
+      - name: status
+      - name: origin_iata
+        description: "A foreign key which is PK in dim_airports as airport_id"
+      - name: dest_iata
+        description: "A foreign key which is PK in dim_airports as airport_id"
+      - name: airline_iata
+        description: "A foreign key which is PK in dim_airlines"
+      - name: passenger_sk
+        description: "A foreign key which is PK in dim_passengers"
+      - name: created_at
+      - name: modified_at
