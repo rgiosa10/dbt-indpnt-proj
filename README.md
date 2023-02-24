@@ -2,7 +2,9 @@
 
 #### By Ruben Giosa
 
-#### This repo includes covers the same data modeling, loading, normalization exercise covered in my [data-modeling-cr](https://github.com/rgiosa10/data-modeling-cr) repository but leverages [dbt](https://www.getdbt.com/) instead. [Data Stack Academy](https://github.com/datastackacademy) will be incorporating my project into their dbt curriculum going forward.
+#### This repo includes covers the same data modeling, loading, normalization exercise covered in my [data-modeling-cr](https://github.com/rgiosa10/data-modeling-cr) repository but leverages [dbt](https://www.getdbt.com/) instead. [Data Stack Academy](https://github.com/datastackacademy) will be incorporating my project into their dbt curriculum going forward. Below 
+
+<img src="./imgs/dbt_readme.png" alt="snapshot of work" width="750" />
 
 <br>
 
